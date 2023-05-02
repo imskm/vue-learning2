@@ -21,13 +21,13 @@
 						<div class="col">
 							<div class="form-controls-row">
 								<label for="first_name">Fist Name</label>
-								<input id="first_name" type="text" name="first_name" placeholder="First Name">
+								<input v-model="post.title" id="first_name" type="text" name="first_name" placeholder="First Name">
 							</div>
 						</div>
 						<div class="col">
 							<div class="form-controls-row">
 								<label for="last_name">Last Name</label>
-								<input id="last_name" type="text" name="last_name" placeholder="Last Name">
+								<input v-model="post.content" id="last_name" type="text" name="last_name" placeholder="Last Name">
 							</div>
 						</div>
 					</div>
@@ -35,7 +35,7 @@
 						<div class="col">
 							<div class="form-controls-row">
 								<label for="phone">Phone</label>
-								<input id="phone" type="text" name="phone" placeholder="Phone">
+								<input v-model="post.author" id="phone" type="text" name="phone" placeholder="Phone">
 							</div>
 						</div>
 						<div class="col">
@@ -128,7 +128,7 @@
 						</div>
 					</div>
 					<div class="form-controls-row mt-30">
-						<input type="submit" name="create" value="Create" class="btn btn-danger btn-block">
+						<input @click.prevent="createPost" type="submit" name="create" value="Create" class="btn btn-danger btn-block">
 					</div>
 
 
@@ -136,3 +136,42 @@
 			</div>
 		</div>
 </template>
+
+<script>
+let postModel = {
+	title: "",
+	author: "",
+	content: "",
+}
+export default {
+	data() {
+		return {
+			post: postModel,
+		}
+	},
+
+	methods: {
+		createPost() {
+			console.log(this.post);
+			const url = `https://jsonplaceholder.typicode.com/posts`;
+			const options = {
+				method: "POST",
+				body: JSON.stringify(this.post),
+			};
+
+			fetch(url, options).then((res) => {
+				console.log(res);
+
+				return res.json();
+
+			}).then((data) => {
+
+				console.log(data);
+
+			}).catch((error) => {
+				console.log(error);
+			});
+		}
+	}
+}
+</script>
